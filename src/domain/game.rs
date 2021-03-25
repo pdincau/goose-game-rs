@@ -46,6 +46,14 @@ mod tests {
 
         let players: Vec<Player> = game.players();
 
-        assert_eq!(1, players.len())
+        assert_eq!(1, players.len());
+
+        match players.first() {
+            None => panic!("failed!"),
+            Some(actual_player) => {
+                assert_eq!("Piero", actual_player.name)
+            }
+        }
+
     }
 }
