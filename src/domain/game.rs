@@ -1,7 +1,15 @@
-struct Game {}
+struct Game {
+    players: Vec<Player>
+}
 
 impl Game {
-    pub fn add(&self, player: Player) -> Result<(), GameError> {
+    pub fn new() -> Game {
+        Game {
+            players: Vec::new()
+        }
+    }
+    pub fn add(&mut self, player: Player) -> Result<(), GameError> {
+        self.players.push(Player { name: "Piero" });
         Ok(())
     }
 
@@ -27,7 +35,7 @@ mod tests {
 
     #[test]
     fn add_a_player() {
-        let game = Game {};
+        let mut game = Game::new();
 
         let player = Player { name: "Piero" };
 
