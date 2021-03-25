@@ -9,13 +9,14 @@ impl Game {
         }
     }
     pub fn add(&mut self, player: Player) -> Result<(), GameError> {
-        self.players.push(Player { name: "Piero" });
+        self.players.push(player);
         Ok(())
     }
 
     pub fn players(&self) -> Vec<Player> {
         let mut vec = Vec::new();
-        vec.push(Player { name: "Piero" });
+        self.players.iter().for_each(|player| vec.push(player.clone()));
+
         vec
     }
 }
@@ -24,7 +25,7 @@ pub enum GameError {
     GenericError
 }
 
-
+#[derive(Copy, Clone)]
 struct Player {
     name: &'static str
 }
