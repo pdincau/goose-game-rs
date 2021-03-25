@@ -1,3 +1,5 @@
+use crate::domain::game::GameError::AlreadyInGame;
+
 struct Game {
     players: Vec<Player>
 }
@@ -9,8 +11,13 @@ impl Game {
         }
     }
     pub fn add(&mut self, player: Player) -> Result<(), GameError> {
-        self.players.push(player);
-        Ok(())
+        match self.players.iter().find(|&&p| p == player) {
+            None => {
+                self.players.push(player);
+                Ok(())
+            }
+            Some(_) => Err(AlreadyInGame)
+        }
     }
 
     pub fn players(&self) -> Vec<Player> {
@@ -22,7 +29,7 @@ impl Game {
 }
 
 pub enum GameError {
-    GenericError
+    AlreadyInGame
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
@@ -57,5 +64,16 @@ mod tests {
             }
         }
 
+    }
+
+    #[test]
+    fn cannot_add_twice_same_player() {
+        let mut game = Game::new();
+
+        let _ = game.add(Player { name: "Piero" });
+
+        let result = game.add(Player { name: "Piero" });
+
+        assert!(result.is_err());
     }
 }
