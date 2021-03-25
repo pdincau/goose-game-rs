@@ -25,7 +25,7 @@ pub enum GameError {
     GenericError
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug, PartialEq)]
 struct Player {
     name: &'static str
 }
@@ -48,10 +48,12 @@ mod tests {
 
         assert_eq!(1, players.len());
 
+        let expected_player = Player { name: "Piero" };
+
         match players.first() {
             None => panic!("failed!"),
             Some(actual_player) => {
-                assert_eq!("Piero", actual_player.name)
+                assert_eq!(expected_player, actual_player.clone())
             }
         }
 
