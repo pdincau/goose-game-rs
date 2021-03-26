@@ -21,10 +21,7 @@ impl Game {
     }
 
     pub fn players(&self) -> Vec<Player> {
-        let mut vec = Vec::new();
-        self.players.iter().for_each(|player| vec.push(player.clone()));
-
-        vec
+        self.players.clone()
     }
 }
 
@@ -63,7 +60,6 @@ mod tests {
                 assert_eq!(expected_player, actual_player.clone())
             }
         }
-
     }
 
     #[test]
