@@ -11,7 +11,7 @@ impl Game {
         }
     }
     pub fn add(&mut self, player: Player) -> Result<(), GameError> {
-        match self.players.iter().find(|&&p| p == player) {
+        match self.find_player(player) {
             None => {
                 self.players.push(player);
                 Ok(())
@@ -22,6 +22,10 @@ impl Game {
 
     pub fn players(&self) -> Vec<Player> {
         self.players.clone()
+    }
+
+    fn find_player(&self, player: Player) -> Option<&Player> {
+        self.players.iter().find(|&&p| p == player)
     }
 }
 
