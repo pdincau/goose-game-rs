@@ -1,13 +1,13 @@
 use crate::domain::game::GameError::AlreadyInGame;
 
-struct Game {
-    players: Vec<Player>
+pub struct Game {
+    players: Vec<Player>,
 }
 
 impl Game {
     pub fn new() -> Game {
         Game {
-            players: Vec::new()
+            players: Vec::new(),
         }
     }
     pub fn add(&mut self, player: Player) -> Result<(), GameError> {
@@ -16,7 +16,7 @@ impl Game {
                 self.players.push(player);
                 Ok(())
             }
-            Some(_) => Err(AlreadyInGame)
+            Some(_) => Err(AlreadyInGame),
         }
     }
 
@@ -30,12 +30,22 @@ impl Game {
 }
 
 pub enum GameError {
-    AlreadyInGame
+    AlreadyInGame,
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
-struct Player {
-    name: &'static str
+pub struct Player {
+    name: &'static str,
+}
+
+impl Player {
+    pub fn new(name: &'static str) -> Player {
+        Player { name }
+    }
+
+    pub fn name(&self) -> &'static str {
+        self.name
+    }
 }
 
 #[cfg(test)]
