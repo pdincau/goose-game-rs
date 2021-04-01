@@ -6,11 +6,14 @@ fn main() {
     let mut game = Game::new();
 
     if game.add(Player::new("Pietro")).is_ok() {
-        let player_names: Vec<String> = game.players().iter().map(|p| p.name().to_string()).collect();
-        println!("Players: {}", player_names.join(", "));
+        format(game.players());
     };
     if game.add(Player::new("Paolo")).is_ok() {
-        let player_names: Vec<String> = game.players().iter().map(|p| p.name().to_string()).collect();
-        println!("Players: {}", player_names.join(", "));
+        format(game.players());
     }
+}
+
+fn format(players: Vec<Player>) {
+    let player_names: Vec<String> = players.iter().map(|p| p.name().to_string()).collect();
+    println!("Players: {}", player_names.join(", "));
 }
