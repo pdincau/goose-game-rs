@@ -5,8 +5,13 @@ mod domain;
 fn main() {
     let mut game = Game::new();
 
-    if game.add(Player::new("Pietro")).is_ok() {
-        format(game.players());
+    match game.add(Player::new("Pietro")) {
+        Ok(_) => format(game.players()),
+        Err(_) => println!("Pippo: already existing player")
+    };
+    match game.add(Player::new("Pietro")) {
+        Ok(_) => format(game.players()),
+        Err(_) => println!("Pietro: already existing player")
     };
     if game.add(Player::new("Paolo")).is_ok() {
         format(game.players());
@@ -17,3 +22,8 @@ fn format(players: Vec<Player>) {
     let player_names: Vec<String> = players.iter().map(|p| p.name().to_string()).collect();
     println!("Players: {}", player_names.join(", "));
 }
+
+
+// add integration test on main
+// is there a way to handle errors in a more elegant way
+// separate command and query? Do we need a new abstraction level?
