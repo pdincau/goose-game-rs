@@ -7,7 +7,7 @@ fn main() {
 
     match game.add(Player::new("Pietro")) {
         Ok(_) => format(game.players()),
-        Err(_) => println!("Pippo: already existing player")
+        Err(_) => println!("Pietro: already existing player")
     };
     match game.add(Player::new("Pietro")) {
         Ok(_) => format(game.players()),
