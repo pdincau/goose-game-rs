@@ -1,4 +1,4 @@
-use crate::domain::game::{Game, GameError, Player};
+use crate::domain::game::{Game, Player};
 
 mod domain;
 
@@ -7,12 +7,14 @@ fn main() {
 
     match game.add(Player::new("Pietro")) {
         Ok(_) => format(game.players()),
-        Err(_) => println!("Pietro: already existing player")
+        Err(error) => println!("{}", error),
     };
+
     match game.add(Player::new("Pietro")) {
         Ok(_) => format(game.players()),
-        Err(_) => println!("Pietro: already existing player")
+        Err(error) => println!("{}", error),
     };
+
     if game.add(Player::new("Paolo")).is_ok() {
         format(game.players());
     }
@@ -23,7 +25,5 @@ fn format(players: Vec<Player>) {
     println!("Players: {}", player_names.join(", "));
 }
 
-
 // add integration test on main
-// is there a way to handle errors in a more elegant way
 // separate command and query? Do we need a new abstraction level?

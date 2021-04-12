@@ -1,4 +1,5 @@
 use crate::domain::game::GameError::AlreadyInGame;
+use std::fmt::{Display, Formatter, Result as FmtResult};
 
 pub struct Game {
     players: Vec<Player>,
@@ -16,7 +17,7 @@ impl Game {
                 self.players.push(player);
                 Ok(())
             }
-            Some(_) => Err(AlreadyInGame),
+            Some(_) => Err(AlreadyInGame(player.name().to_string()))
         }
     }
 
@@ -30,7 +31,15 @@ impl Game {
 }
 
 pub enum GameError {
-    AlreadyInGame,
+    AlreadyInGame(String),
+}
+
+impl Display for GameError {
+    fn fmt(&self, f: &mut Formatter) -> FmtResult {
+        match self {
+            AlreadyInGame(name) => write!(f, "{}: already existing player", name)
+        }
+    }
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
