@@ -26,4 +26,4 @@ fn format(players: Vec<Player>) {
 }
 
 // add integration test on main
-// separate command and query? Do we need a new abstraction level?
+// separate command and query? Do we need maybe a new abstraction level?
