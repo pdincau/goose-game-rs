@@ -1,32 +1,71 @@
-use crate::domain::game::GameError::AlreadyInGame;
+use std::fmt;
+
 use thiserror::Error;
 
+use crate::domain::game::GameError::AlreadyInGame;
+
 pub struct Game {
-    players: Vec<Player>,
+    players: Players,
+}
+
+pub struct Players {
+    elements: Vec<Player>,
+}
+
+impl Players {
+    pub fn find(&self, player: Player) -> Option<&Player> {
+        self.elements.iter().find(|&&p| p == player)
+    }
+
+    pub fn add(&mut self, player: Player) {
+        self.elements.push(player);
+    }
+
+    #[allow(dead_code)]
+    fn first(&self) -> Option<&Player> {
+        self.elements.first()
+    }
+
+    #[allow(dead_code)]
+    fn count(&self) -> usize {
+        self.elements.len()
+    }
+}
+
+impl Default for Players {
+    fn default() -> Self {
+        Players {
+            elements: Vec::new(),
+        }
+    }
+}
+
+impl fmt::Debug for Players {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let player_names: Vec<String> = self.elements.iter().map(|p| p.name().to_string()).collect();
+        write!(f, "Players: {}", player_names.join(", "))
+    }
 }
 
 impl Game {
     pub fn new() -> Game {
         Game {
-            players: Vec::new(),
+            players: Players::default(),
         }
     }
+
     pub fn add(&mut self, player: Player) -> Result<(), GameError> {
-        match self.find_player(player) {
+        match self.players.find(player) {
             None => {
-                self.players.push(player);
+                self.players.add(player);
                 Ok(())
             }
             Some(_) => Err(AlreadyInGame(player.name().to_string()))
         }
     }
 
-    pub fn players(&self) -> &Vec<Player> {
+    pub fn players(&self) -> &Players {
         &self.players
-    }
-
-    fn find_player(&self, player: Player) -> Option<&Player> {
-        self.players.iter().find(|&&p| p == player)
     }
 }
 
@@ -65,9 +104,9 @@ mod tests {
 
         assert!(result.is_ok());
 
-        let players: &Vec<Player> = game.players();
+        let players: &Players = game.players();
 
-        assert_eq!(1, players.len());
+        assert_eq!(1, players.count());
 
         let expected_player = Player { name: "Piero" };
 
