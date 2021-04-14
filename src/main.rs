@@ -1,4 +1,6 @@
-use crate::domain::game::{Game, Player};
+use domain::player::Player;
+
+use crate::domain::game::Game;
 
 mod domain;
 

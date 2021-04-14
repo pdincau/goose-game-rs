@@ -1,50 +1,10 @@
-use std::fmt;
-
-use thiserror::Error;
-
-use crate::domain::game::GameError::AlreadyInGame;
+use crate::domain::game_error::GameError;
+use crate::domain::game_error::GameError::AlreadyInGame;
+use crate::domain::player::Player;
+use crate::domain::players::Players;
 
 pub struct Game {
     players: Players,
-}
-
-pub struct Players {
-    elements: Vec<Player>,
-}
-
-impl Players {
-    pub fn find(&self, player: Player) -> Option<&Player> {
-        self.elements.iter().find(|&&p| p == player)
-    }
-
-    pub fn add(&mut self, player: Player) {
-        self.elements.push(player);
-    }
-
-    #[allow(dead_code)]
-    fn first(&self) -> Option<&Player> {
-        self.elements.first()
-    }
-
-    #[allow(dead_code)]
-    fn count(&self) -> usize {
-        self.elements.len()
-    }
-}
-
-impl Default for Players {
-    fn default() -> Self {
-        Players {
-            elements: Vec::new(),
-        }
-    }
-}
-
-impl fmt::Debug for Players {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let player_names: Vec<String> = self.elements.iter().map(|p| p.name().to_string()).collect();
-        write!(f, "Players: {}", player_names.join(", "))
-    }
 }
 
 impl Game {
@@ -69,27 +29,6 @@ impl Game {
     }
 }
 
-#[derive(Debug, Error)]
-pub enum GameError {
-    #[error("{}: already existing player", .0)]
-    AlreadyInGame(String),
-}
-
-#[derive(Copy, Clone, Debug, PartialEq)]
-pub struct Player {
-    name: &'static str,
-}
-
-impl Player {
-    pub fn new(name: &'static str) -> Player {
-        Player { name }
-    }
-
-    pub fn name(&self) -> &'static str {
-        self.name
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -98,7 +37,7 @@ mod tests {
     fn add_a_player() {
         let mut game = Game::new();
 
-        let player = Player { name: "Piero" };
+        let player = Player::new("Piero");
 
         let result = game.add(player);
 
@@ -108,7 +47,7 @@ mod tests {
 
         assert_eq!(1, players.count());
 
-        let expected_player = Player { name: "Piero" };
+        let expected_player = Player::new("Piero");
 
         match players.first() {
             None => panic!("failed!"),
@@ -122,9 +61,9 @@ mod tests {
     fn cannot_add_twice_same_player() {
         let mut game = Game::new();
 
-        let _ = game.add(Player { name: "Piero" });
+        let _ = game.add(Player::new("Piero"));
 
-        let result = game.add(Player { name: "Piero" });
+        let result = game.add(Player::new("Piero"));
 
         assert!(result.is_err());
     }
