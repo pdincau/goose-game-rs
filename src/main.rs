@@ -20,7 +20,7 @@ fn main() {
     }
 }
 
-fn format(players: Vec<Player>) {
+fn format(players: &Vec<Player>) {
     let player_names: Vec<String> = players.iter().map(|p| p.name().to_string()).collect();
     println!("Players: {}", player_names.join(", "));
 }

@@ -21,8 +21,8 @@ impl Game {
         }
     }
 
-    pub fn players(&self) -> Vec<Player> {
-        self.players.clone()
+    pub fn players(&self) -> &Vec<Player> {
+        &self.players
     }
 
     fn find_player(&self, player: Player) -> Option<&Player> {
@@ -65,7 +65,7 @@ mod tests {
 
         assert!(result.is_ok());
 
-        let players: Vec<Player> = game.players();
+        let players: &Vec<Player> = game.players();
 
         assert_eq!(1, players.len());
 
