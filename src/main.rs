@@ -15,9 +15,10 @@ fn main() {
         Err(error) => println!("{}", error),
     };
 
-    if game.add(Player::new("Paolo")).is_ok() {
-        println!("{:?}", game.players());
-    }
+    match game.add(Player::new("Paolo")) {
+        Ok(_) => println!("{:?}", game.players()),
+        Err(error) => println!("{}", error),
+    };
 }
 
 // add integration test on main
